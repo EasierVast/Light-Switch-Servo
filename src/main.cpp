@@ -1,18 +1,19 @@
 #include <Arduino.h>
+#include <Servo.h>
 
-// put function declarations here:
-int myFunction(int, int);
+// Define Pins
+#define SERVO_PIN 9
+
+Servo myServo;
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(9600);
+  myServo.attach(SERVO_PIN);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  myServo.write(0);
+  delay(1000);
+  myServo.write(180);
+  delay(1000);
 }
