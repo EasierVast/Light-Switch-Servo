@@ -6,20 +6,32 @@
 #define BUTTON_PIN 2
 
 Servo myServo;
-int buttonState = LOW;
+int buttonStateNew;
+int buttonStateOld = LOW;
+int servoState = LOW;
+int debounceDelay = 10;
 
 void setup() {
   Serial.begin(9600);
   myServo.attach(SERVO_PIN);
+  servoState = LOW;
   pinMode(BUTTON_PIN, INPUT_PULLUP);
 }
 
 void loop() {
-  buttonState = digitalRead(BUTTON_PIN);
-  if (buttonState == HIGH) {
-    myServo.write(180);
+  buttonStateNew = digitalRead(BUTTON_PIN);
+
+  if (buttonStateOld == LOW && buttonStateNew == HIGH) {
+    if (servoState == LOW) {
+      myServo.write(90);
+      servoState = HIGH;
+    }
+    else {
+      myServo.write(0);
+      servoState = LOW;
+    }
   }
-  else if (buttonState == LOW) {
-    myServo.write(0);
-  }
+  buttonStateOld = buttonStateNew;
+  delay(debounceDelay);
+
 }
